@@ -9,38 +9,204 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesWebRouteImport } from './routes/services.web'
+import { Route as ServicesMobileRouteImport } from './routes/services.mobile'
+import { Route as ServicesGameRouteImport } from './routes/services.game'
+import { Route as ServicesCybersecurityRouteImport } from './routes/services.cybersecurity'
+import { Route as ServicesCloudRouteImport } from './routes/services.cloud'
+import { Route as ServicesAiRouteImport } from './routes/services.ai'
 
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfolioRoute = PortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesWebRoute = ServicesWebRouteImport.update({
+  id: '/web',
+  path: '/web',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesMobileRoute = ServicesMobileRouteImport.update({
+  id: '/mobile',
+  path: '/mobile',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesGameRoute = ServicesGameRouteImport.update({
+  id: '/game',
+  path: '/game',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesCybersecurityRoute = ServicesCybersecurityRouteImport.update({
+  id: '/cybersecurity',
+  path: '/cybersecurity',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesCloudRoute = ServicesCloudRouteImport.update({
+  id: '/cloud',
+  path: '/cloud',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesAiRoute = ServicesAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => ServicesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/portfolio': typeof PortfolioRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/services/ai': typeof ServicesAiRoute
+  '/services/cloud': typeof ServicesCloudRoute
+  '/services/cybersecurity': typeof ServicesCybersecurityRoute
+  '/services/game': typeof ServicesGameRoute
+  '/services/mobile': typeof ServicesMobileRoute
+  '/services/web': typeof ServicesWebRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/portfolio': typeof PortfolioRoute
+  '/services/ai': typeof ServicesAiRoute
+  '/services/cloud': typeof ServicesCloudRoute
+  '/services/cybersecurity': typeof ServicesCybersecurityRoute
+  '/services/game': typeof ServicesGameRoute
+  '/services/mobile': typeof ServicesMobileRoute
+  '/services/web': typeof ServicesWebRoute
+  '/services': typeof ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/portfolio': typeof PortfolioRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/services/ai': typeof ServicesAiRoute
+  '/services/cloud': typeof ServicesCloudRoute
+  '/services/cybersecurity': typeof ServicesCybersecurityRoute
+  '/services/game': typeof ServicesGameRoute
+  '/services/mobile': typeof ServicesMobileRoute
+  '/services/web': typeof ServicesWebRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/portfolio'
+    | '/services'
+    | '/services/ai'
+    | '/services/cloud'
+    | '/services/cybersecurity'
+    | '/services/game'
+    | '/services/mobile'
+    | '/services/web'
+    | '/services/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/portfolio'
+    | '/services/ai'
+    | '/services/cloud'
+    | '/services/cybersecurity'
+    | '/services/game'
+    | '/services/mobile'
+    | '/services/web'
+    | '/services'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/portfolio'
+    | '/services'
+    | '/services/ai'
+    | '/services/cloud'
+    | '/services/cybersecurity'
+    | '/services/game'
+    | '/services/mobile'
+    | '/services/web'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  BlogRoute: typeof BlogRoute
+  PortfolioRoute: typeof PortfolioRoute
+  ServicesRoute: typeof ServicesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolio': {
+      id: '/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof PortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +214,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/': {
+      id: '/services/'
+      path: '/'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/web': {
+      id: '/services/web'
+      path: '/web'
+      fullPath: '/services/web'
+      preLoaderRoute: typeof ServicesWebRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/mobile': {
+      id: '/services/mobile'
+      path: '/mobile'
+      fullPath: '/services/mobile'
+      preLoaderRoute: typeof ServicesMobileRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/game': {
+      id: '/services/game'
+      path: '/game'
+      fullPath: '/services/game'
+      preLoaderRoute: typeof ServicesGameRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/cybersecurity': {
+      id: '/services/cybersecurity'
+      path: '/cybersecurity'
+      fullPath: '/services/cybersecurity'
+      preLoaderRoute: typeof ServicesCybersecurityRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/cloud': {
+      id: '/services/cloud'
+      path: '/cloud'
+      fullPath: '/services/cloud'
+      preLoaderRoute: typeof ServicesCloudRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/ai': {
+      id: '/services/ai'
+      path: '/ai'
+      fullPath: '/services/ai'
+      preLoaderRoute: typeof ServicesAiRouteImport
+      parentRoute: typeof ServicesRoute
+    }
   }
 }
 
+interface ServicesRouteChildren {
+  ServicesAiRoute: typeof ServicesAiRoute
+  ServicesCloudRoute: typeof ServicesCloudRoute
+  ServicesCybersecurityRoute: typeof ServicesCybersecurityRoute
+  ServicesGameRoute: typeof ServicesGameRoute
+  ServicesMobileRoute: typeof ServicesMobileRoute
+  ServicesWebRoute: typeof ServicesWebRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
+}
+
+const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesAiRoute: ServicesAiRoute,
+  ServicesCloudRoute: ServicesCloudRoute,
+  ServicesCybersecurityRoute: ServicesCybersecurityRoute,
+  ServicesGameRoute: ServicesGameRoute,
+  ServicesMobileRoute: ServicesMobileRoute,
+  ServicesWebRoute: ServicesWebRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
+}
+
+const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
+  ServicesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  BlogRoute: BlogRoute,
+  PortfolioRoute: PortfolioRoute,
+  ServicesRoute: ServicesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
