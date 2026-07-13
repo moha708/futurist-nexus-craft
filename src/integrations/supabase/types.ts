@@ -43,40 +43,147 @@ export type Database = {
       }
       job_applications: {
         Row: {
+          admin_notes: string | null
           cover_letter: string | null
           created_at: string
+          current_company: string | null
+          education: string | null
           email: string
+          expected_salary: string | null
           full_name: string
           id: string
+          job_id: string | null
+          linkedin_url: string | null
+          notice_period: string | null
           phone: string | null
+          portfolio_url: string | null
           position: string
           resume_url: string | null
+          skills: string[]
           status: string
+          updated_at: string
           user_id: string | null
+          years_experience: number | null
         }
         Insert: {
+          admin_notes?: string | null
           cover_letter?: string | null
           created_at?: string
+          current_company?: string | null
+          education?: string | null
           email: string
+          expected_salary?: string | null
           full_name: string
           id?: string
+          job_id?: string | null
+          linkedin_url?: string | null
+          notice_period?: string | null
           phone?: string | null
+          portfolio_url?: string | null
           position: string
           resume_url?: string | null
+          skills?: string[]
           status?: string
+          updated_at?: string
           user_id?: string | null
+          years_experience?: number | null
         }
         Update: {
+          admin_notes?: string | null
           cover_letter?: string | null
           created_at?: string
+          current_company?: string | null
+          education?: string | null
           email?: string
+          expected_salary?: string | null
           full_name?: string
           id?: string
+          job_id?: string | null
+          linkedin_url?: string | null
+          notice_period?: string | null
           phone?: string | null
+          portfolio_url?: string | null
           position?: string
           resume_url?: string | null
+          skills?: string[]
           status?: string
+          updated_at?: string
           user_id?: string | null
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          created_at: string
+          department: string
+          description: string
+          employment_type: string
+          id: string
+          is_active: boolean
+          is_featured: boolean
+          level: string
+          location: string
+          nice_to_haves: string[]
+          posted_at: string
+          requirements: string[]
+          responsibilities: string[]
+          salary_currency: string | null
+          salary_max: number | null
+          salary_min: number | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          description: string
+          employment_type?: string
+          id?: string
+          is_active?: boolean
+          is_featured?: boolean
+          level?: string
+          location: string
+          nice_to_haves?: string[]
+          posted_at?: string
+          requirements?: string[]
+          responsibilities?: string[]
+          salary_currency?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          description?: string
+          employment_type?: string
+          id?: string
+          is_active?: boolean
+          is_featured?: boolean
+          level?: string
+          location?: string
+          nice_to_haves?: string[]
+          posted_at?: string
+          requirements?: string[]
+          responsibilities?: string[]
+          salary_currency?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          slug?: string
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
