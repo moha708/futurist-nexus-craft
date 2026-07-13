@@ -13,7 +13,24 @@ export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
 });
 
-type App = { id: string; position: string; status: string; created_at: string };
+type App = {
+  id: string;
+  position: string;
+  status: string;
+  created_at: string;
+  years_experience: number | null;
+  skills: string[] | null;
+  resume_url: string | null;
+};
+
+const STATUS_STYLES: Record<string, string> = {
+  pending: "border-muted-foreground/40 text-muted-foreground",
+  reviewing: "border-nova-blue/50 text-nova-blue",
+  interview: "border-nova-purple/50 text-nova-purple",
+  offer: "border-emerald-500/50 text-emerald-400",
+  hired: "border-emerald-500/70 text-emerald-300 bg-emerald-500/10",
+  rejected: "border-destructive/50 text-destructive",
+};
 
 function Dashboard() {
   const { t } = useI18n();
@@ -25,7 +42,7 @@ function Dashboard() {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("job_applications").select("id,position,status,created_at").eq("user_id", user.id)
+    supabase.from("job_applications").select("id,position,status,created_at,years_experience,skills,resume_url").eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .then(({ data }) => setApps(data || []));
   }, [user]);
@@ -45,12 +62,26 @@ function Dashboard() {
           ) : (
             <div className="space-y-3">
               {apps.map((a) => (
-                <div key={a.id} className="flex items-center justify-between rounded-xl border border-border p-4">
-                  <div>
-                    <div className="font-medium">{a.position}</div>
-                    <div className="text-xs text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</div>
+                <div key={a.id} className="rounded-xl border border-border p-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="font-medium">{a.position}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">
+                        {new Date(a.created_at).toLocaleDateString()}
+                        {a.years_experience != null && ` · ${a.years_experience}y exp`}
+                      </div>
+                      {a.skills && a.skills.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {a.skills.slice(0, 6).map((s) => (
+                            <span key={s} className="text-[10px] px-1.5 py-0.5 rounded border border-border text-muted-foreground">{s}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <span className={`text-xs font-medium px-2 py-1 rounded-md border capitalize ${STATUS_STYLES[a.status] ?? STATUS_STYLES.pending}`}>
+                      {t(`dashboard.status.${a.status}`)}
+                    </span>
                   </div>
-                  <span className="text-xs font-medium px-2 py-1 rounded-md border border-primary/40 text-nova-blue capitalize">{a.status}</span>
                 </div>
               ))}
             </div>
