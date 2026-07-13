@@ -32,6 +32,7 @@ import { Route as ServicesCybersecurityRouteImport } from './routes/services.cyb
 import { Route as ServicesCloudRouteImport } from './routes/services.cloud'
 import { Route as ServicesAutomationRouteImport } from './routes/services.automation'
 import { Route as ServicesAiRouteImport } from './routes/services.ai'
+import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -148,6 +149,11 @@ const ServicesAiRoute = ServicesAiRouteImport.update({
   path: '/ai',
   getParentRoute: () => ServicesRoute,
 } as any)
+const CareersSlugRoute = CareersSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CareersRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -155,7 +161,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
-  '/careers': typeof CareersRoute
+  '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/services/ai': typeof ServicesAiRoute
   '/services/automation': typeof ServicesAutomationRoute
   '/services/cloud': typeof ServicesCloudRoute
@@ -180,7 +187,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
-  '/careers': typeof CareersRoute
+  '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
@@ -188,6 +195,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/services/ai': typeof ServicesAiRoute
   '/services/automation': typeof ServicesAutomationRoute
   '/services/cloud': typeof ServicesCloudRoute
@@ -205,7 +213,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
-  '/careers': typeof CareersRoute
+  '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
@@ -214,6 +222,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/services/ai': typeof ServicesAiRoute
   '/services/automation': typeof ServicesAutomationRoute
   '/services/cloud': typeof ServicesCloudRoute
@@ -241,6 +250,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/services'
     | '/terms'
+    | '/careers/$slug'
     | '/services/ai'
     | '/services/automation'
     | '/services/cloud'
@@ -265,6 +275,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/terms'
+    | '/careers/$slug'
     | '/services/ai'
     | '/services/automation'
     | '/services/cloud'
@@ -290,6 +301,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/services'
     | '/terms'
+    | '/careers/$slug'
     | '/services/ai'
     | '/services/automation'
     | '/services/cloud'
@@ -307,7 +319,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
-  CareersRoute: typeof CareersRoute
+  CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
   FaqRoute: typeof FaqRoute
@@ -481,8 +493,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesAiRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/careers/$slug': {
+      id: '/careers/$slug'
+      path: '/$slug'
+      fullPath: '/careers/$slug'
+      preLoaderRoute: typeof CareersSlugRouteImport
+      parentRoute: typeof CareersRoute
+    }
   }
 }
+
+interface CareersRouteChildren {
+  CareersSlugRoute: typeof CareersSlugRoute
+}
+
+const CareersRouteChildren: CareersRouteChildren = {
+  CareersSlugRoute: CareersSlugRoute,
+}
+
+const CareersRouteWithChildren =
+  CareersRoute._addFileChildren(CareersRouteChildren)
 
 interface ServicesRouteChildren {
   ServicesAiRoute: typeof ServicesAiRoute
@@ -518,7 +548,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
-  CareersRoute: CareersRoute,
+  CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
   FaqRoute: FaqRoute,

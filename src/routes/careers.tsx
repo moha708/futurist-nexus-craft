@@ -1,99 +1,123 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PageShell } from "@/components/site/PageShell";
 import { PageHero } from "@/components/site/PageHero";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { useI18n } from "@/lib/i18n";
-import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
-import { Briefcase, MapPin } from "lucide-react";
+import { Briefcase, MapPin, Sparkles, ArrowRight, Search } from "lucide-react";
 
 export const Route = createFileRoute("/careers")({
-  head: () => ({ meta: [{ title: "Careers — NovaSphere" }, { name: "description", content: "Join NovaSphere Technologies. Open roles across engineering, design & strategy." }] }),
+  head: () => ({
+    meta: [
+      { title: "Careers — NovaSphere Technologies" },
+      { name: "description", content: "Open roles at NovaSphere Technologies across AI, engineering, design, cloud, security and PMO. Remote-friendly and Dubai-based positions." },
+      { property: "og:title", content: "Careers — NovaSphere Technologies" },
+      { property: "og:description", content: "Join a global technology studio building tomorrow's software." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Careers,
 });
 
-const jobs = [
-  { title: "Senior AI Engineer", location: "Remote", team: "AI" },
-  { title: "Full-Stack Engineer", location: "Dubai / Remote", team: "Web" },
-  { title: "iOS Engineer", location: "Remote", team: "Mobile" },
-  { title: "Game Developer (Unity)", location: "Remote", team: "Games" },
-  { title: "Security Engineer", location: "Dubai", team: "Security" },
-  { title: "Cloud Architect", location: "Remote", team: "Cloud" },
-  { title: "Product Designer", location: "Remote", team: "Design" },
-  { title: "Technical Program Manager", location: "Dubai", team: "PMO" },
-];
+type Job = {
+  id: string;
+  slug: string;
+  title: string;
+  department: string;
+  location: string;
+  employment_type: string;
+  level: string;
+  description: string;
+  is_featured: boolean;
+  posted_at: string;
+};
 
 function Careers() {
   const { t } = useI18n();
-  const { user } = useAuth();
-  const [selected, setSelected] = useState<string | null>(null);
-  const [form, setForm] = useState({ full_name: "", email: "", phone: "", cover_letter: "", resume_url: "" });
-  const [submitting, setSubmitting] = useState(false);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
+  const [dept, setDept] = useState<string>("all");
+  const [loc, setLoc] = useState<string>("all");
 
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) { toast.error(t("careers.form.needAuth")); return; }
-    setSubmitting(true);
-    const { error } = await supabase.from("job_applications").insert({
-      user_id: user.id,
-      position: selected!,
-      full_name: form.full_name,
-      email: form.email,
-      phone: form.phone || null,
-      cover_letter: form.cover_letter || null,
-      resume_url: form.resume_url || null,
-    });
-    setSubmitting(false);
-    if (error) { toast.error(error.message); return; }
-    toast.success(t("careers.form.success"));
-    setSelected(null);
-    setForm({ full_name: "", email: "", phone: "", cover_letter: "", resume_url: "" });
-  };
+  useEffect(() => {
+    supabase.from("jobs")
+      .select("id,slug,title,department,location,employment_type,level,description,is_featured,posted_at")
+      .eq("is_active", true)
+      .order("is_featured", { ascending: false })
+      .order("posted_at", { ascending: false })
+      .then(({ data }) => { setJobs((data as Job[]) || []); setLoading(false); });
+  }, []);
+
+  const departments = useMemo(() => Array.from(new Set(jobs.map((j) => j.department))).sort(), [jobs]);
+  const locations = useMemo(() => Array.from(new Set(jobs.map((j) => j.location))).sort(), [jobs]);
+
+  const filtered = useMemo(() => jobs.filter((j) => {
+    if (dept !== "all" && j.department !== dept) return false;
+    if (loc !== "all" && j.location !== loc) return false;
+    if (q && !`${j.title} ${j.department} ${j.description}`.toLowerCase().includes(q.toLowerCase())) return false;
+    return true;
+  }), [jobs, q, dept, loc]);
 
   return (
     <PageShell>
       <PageHero eyebrow={t("nav.careers")} title={t("careers.title")} subtitle={t("careers.subtitle")} />
-      <section className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid gap-4">
-          {jobs.map((j) => (
-            <div key={j.title} className="surface-card rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4">
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground mb-2">
-                  <span className="inline-flex items-center gap-1 rounded-md border border-primary/40 text-nova-blue px-2 py-0.5"><Briefcase className="h-3 w-3" />{j.team}</span>
-                  <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" />{j.location}</span>
-                </div>
-                <h3 className="text-lg font-semibold">{j.title}</h3>
-              </div>
-              <Button className="btn-hero btn-hero-hover border-0" onClick={() => setSelected(j.title)}>
-                {t("careers.apply")}
-              </Button>
-            </div>
-          ))}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
+        <div className="surface-card rounded-2xl p-4 sm:p-5 mb-8 grid gap-3 sm:grid-cols-[1fr_auto_auto]">
+          <div className="relative">
+            <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("careers.search")} className="ps-9" />
+          </div>
+          <select value={dept} onChange={(e) => setDept(e.target.value)}
+            className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            <option value="all">{t("careers.filter.all")}</option>
+            {departments.map((d) => <option key={d} value={d}>{d}</option>)}
+          </select>
+          <select value={loc} onChange={(e) => setLoc(e.target.value)}
+            className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+            <option value="all">{t("careers.filter.allLocations")}</option>
+            {locations.map((l) => <option key={l} value={l}>{l}</option>)}
+          </select>
         </div>
 
-        {selected && (
-          <div className="fixed inset-0 z-50 grid place-items-center bg-background/80 backdrop-blur px-4" onClick={() => setSelected(null)}>
-            <form onClick={(e) => e.stopPropagation()} onSubmit={submit}
-              className="surface-card w-full max-w-lg rounded-2xl p-8 space-y-4">
-              <h3 className="text-2xl font-bold">{t("careers.form.title")}</h3>
-              <p className="text-sm text-muted-foreground">{selected}</p>
-              {!user && <p className="text-sm text-destructive">{t("careers.form.needAuth")} <Link to="/auth" className="underline">{t("nav.signin")}</Link></p>}
-              <div className="space-y-3">
-                <div><Label>{t("careers.form.name")}</Label><Input required value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} /></div>
-                <div><Label>{t("careers.form.email")}</Label><Input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
-                <div><Label>{t("careers.form.phone")}</Label><Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></div>
-                <div><Label>{t("careers.form.resume")}</Label><Input value={form.resume_url} onChange={(e) => setForm({ ...form, resume_url: e.target.value })} /></div>
-                <div><Label>{t("careers.form.cover")}</Label><Textarea rows={4} value={form.cover_letter} onChange={(e) => setForm({ ...form, cover_letter: e.target.value })} /></div>
-              </div>
-              <Button disabled={submitting || !user} className="w-full btn-hero btn-hero-hover border-0">
-                {t("careers.form.submit")}
-              </Button>
-            </form>
+        {loading ? (
+          <div className="grid gap-4">
+            {[0,1,2,3].map((i) => <div key={i} className="h-32 rounded-2xl bg-card/40 animate-pulse" />)}
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="surface-card rounded-2xl p-12 text-center text-muted-foreground">{t("careers.empty")}</div>
+        ) : (
+          <div className="grid gap-4">
+            {filtered.map((j) => (
+              <Link key={j.id} to="/careers/$slug" params={{ slug: j.slug }}
+                className="group surface-card rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4 hover:border-primary/50 transition-colors">
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2 text-xs mb-2">
+                    <span className="inline-flex items-center gap-1 rounded-md border border-primary/40 text-nova-blue px-2 py-0.5">
+                      <Briefcase className="h-3 w-3" />{j.department}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-muted-foreground">
+                      <MapPin className="h-3 w-3" />{j.location}
+                    </span>
+                    <span className="text-muted-foreground">· {t(`careers.type.${j.employment_type.replace("-","")}`)}</span>
+                    <span className="text-muted-foreground">· {t(`careers.level.${j.level}`)}</span>
+                    {j.is_featured && (
+                      <span className="inline-flex items-center gap-1 rounded-md bg-primary/10 text-nova-purple px-2 py-0.5">
+                        <Sparkles className="h-3 w-3" />{t("careers.featured")}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-lg font-semibold group-hover:text-nova-blue transition-colors">{j.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{j.description}</p>
+                </div>
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-nova-blue">
+                  {t("careers.viewRole")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+                </span>
+              </Link>
+            ))}
           </div>
         )}
       </section>
