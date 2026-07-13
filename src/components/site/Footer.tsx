@@ -28,6 +28,8 @@ export function Footer() {
             <li><Link to="/services/game" className="hover:text-foreground">{t("services.game.title")}</Link></li>
             <li><Link to="/services/cybersecurity" className="hover:text-foreground">{t("services.security.title")}</Link></li>
             <li><Link to="/services/cloud" className="hover:text-foreground">{t("services.cloud.title")}</Link></li>
+            <li><Link to="/services/uiux" className="hover:text-foreground">{t("services.uiux.title")}</Link></li>
+            <li><Link to="/services/automation" className="hover:text-foreground">{t("services.automation.title")}</Link></li>
           </ul>
         </div>
         <div>
@@ -35,8 +37,12 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li><Link to="/about" className="hover:text-foreground">{t("nav.about")}</Link></li>
             <li><Link to="/careers" className="hover:text-foreground">{t("nav.careers")}</Link></li>
+            <li><Link to="/pricing" className="hover:text-foreground">{t("nav.pricing")}</Link></li>
             <li><Link to="/blog" className="hover:text-foreground">{t("nav.blog")}</Link></li>
+            <li><Link to="/faq" className="hover:text-foreground">{t("nav.faq")}</Link></li>
             <li><Link to="/contact" className="hover:text-foreground">{t("nav.contact")}</Link></li>
+            <li><Link to="/privacy" className="hover:text-foreground">{t("legal.privacy.title")}</Link></li>
+            <li><Link to="/terms" className="hover:text-foreground">{t("legal.terms.title")}</Link></li>
           </ul>
         </div>
       </div>
