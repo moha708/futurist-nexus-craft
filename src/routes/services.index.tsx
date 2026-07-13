@@ -3,7 +3,7 @@ import { PageShell } from "@/components/site/PageShell";
 import { PageHero } from "@/components/site/PageHero";
 import { CTA } from "@/components/site/CTA";
 import { useI18n } from "@/lib/i18n";
-import { Brain, Globe, Smartphone, Gamepad2, ShieldCheck, Cloud, ArrowRight } from "lucide-react";
+import { Brain, Globe, Smartphone, Gamepad2, ShieldCheck, Cloud, ArrowRight, Palette, Workflow } from "lucide-react";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({ meta: [
@@ -22,6 +22,8 @@ function ServicesIndex() {
     { icon: Gamepad2, key: "game", to: "/services/game" },
     { icon: ShieldCheck, key: "security", to: "/services/cybersecurity" },
     { icon: Cloud, key: "cloud", to: "/services/cloud" },
+    { icon: Palette, key: "uiux", to: "/services/uiux" },
+    { icon: Workflow, key: "automation", to: "/services/automation" },
   ] as const;
   return (
     <PageShell>

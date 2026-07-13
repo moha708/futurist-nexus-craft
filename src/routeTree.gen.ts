@@ -9,8 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
@@ -21,20 +25,42 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesWebRouteImport } from './routes/services.web'
+import { Route as ServicesUiuxRouteImport } from './routes/services.uiux'
 import { Route as ServicesMobileRouteImport } from './routes/services.mobile'
 import { Route as ServicesGameRouteImport } from './routes/services.game'
 import { Route as ServicesCybersecurityRouteImport } from './routes/services.cybersecurity'
 import { Route as ServicesCloudRouteImport } from './routes/services.cloud'
+import { Route as ServicesAutomationRouteImport } from './routes/services.automation'
 import { Route as ServicesAiRouteImport } from './routes/services.ai'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortfolioRoute = PortfolioRouteImport.update({
   id: '/portfolio',
   path: '/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -87,6 +113,11 @@ const ServicesWebRoute = ServicesWebRouteImport.update({
   path: '/web',
   getParentRoute: () => ServicesRoute,
 } as any)
+const ServicesUiuxRoute = ServicesUiuxRouteImport.update({
+  id: '/uiux',
+  path: '/uiux',
+  getParentRoute: () => ServicesRoute,
+} as any)
 const ServicesMobileRoute = ServicesMobileRouteImport.update({
   id: '/mobile',
   path: '/mobile',
@@ -107,6 +138,11 @@ const ServicesCloudRoute = ServicesCloudRouteImport.update({
   path: '/cloud',
   getParentRoute: () => ServicesRoute,
 } as any)
+const ServicesAutomationRoute = ServicesAutomationRouteImport.update({
+  id: '/automation',
+  path: '/automation',
+  getParentRoute: () => ServicesRoute,
+} as any)
 const ServicesAiRoute = ServicesAiRouteImport.update({
   id: '/ai',
   path: '/ai',
@@ -122,13 +158,19 @@ export interface FileRoutesByFullPath {
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
   '/portfolio': typeof PortfolioRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRouteWithChildren
+  '/terms': typeof TermsRoute
   '/services/ai': typeof ServicesAiRoute
+  '/services/automation': typeof ServicesAutomationRoute
   '/services/cloud': typeof ServicesCloudRoute
   '/services/cybersecurity': typeof ServicesCybersecurityRoute
   '/services/game': typeof ServicesGameRoute
   '/services/mobile': typeof ServicesMobileRoute
+  '/services/uiux': typeof ServicesUiuxRoute
   '/services/web': typeof ServicesWebRoute
   '/services/': typeof ServicesIndexRoute
 }
@@ -141,12 +183,18 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
   '/portfolio': typeof PortfolioRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/services/ai': typeof ServicesAiRoute
+  '/services/automation': typeof ServicesAutomationRoute
   '/services/cloud': typeof ServicesCloudRoute
   '/services/cybersecurity': typeof ServicesCybersecurityRoute
   '/services/game': typeof ServicesGameRoute
   '/services/mobile': typeof ServicesMobileRoute
+  '/services/uiux': typeof ServicesUiuxRoute
   '/services/web': typeof ServicesWebRoute
   '/services': typeof ServicesIndexRoute
 }
@@ -160,13 +208,19 @@ export interface FileRoutesById {
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
   '/portfolio': typeof PortfolioRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRouteWithChildren
+  '/terms': typeof TermsRoute
   '/services/ai': typeof ServicesAiRoute
+  '/services/automation': typeof ServicesAutomationRoute
   '/services/cloud': typeof ServicesCloudRoute
   '/services/cybersecurity': typeof ServicesCybersecurityRoute
   '/services/game': typeof ServicesGameRoute
   '/services/mobile': typeof ServicesMobileRoute
+  '/services/uiux': typeof ServicesUiuxRoute
   '/services/web': typeof ServicesWebRoute
   '/services/': typeof ServicesIndexRoute
 }
@@ -181,13 +235,19 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/dashboard'
+    | '/faq'
     | '/portfolio'
+    | '/pricing'
+    | '/privacy'
     | '/services'
+    | '/terms'
     | '/services/ai'
+    | '/services/automation'
     | '/services/cloud'
     | '/services/cybersecurity'
     | '/services/game'
     | '/services/mobile'
+    | '/services/uiux'
     | '/services/web'
     | '/services/'
   fileRoutesByTo: FileRoutesByTo
@@ -200,12 +260,18 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/dashboard'
+    | '/faq'
     | '/portfolio'
+    | '/pricing'
+    | '/privacy'
+    | '/terms'
     | '/services/ai'
+    | '/services/automation'
     | '/services/cloud'
     | '/services/cybersecurity'
     | '/services/game'
     | '/services/mobile'
+    | '/services/uiux'
     | '/services/web'
     | '/services'
   id:
@@ -218,13 +284,19 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/dashboard'
+    | '/faq'
     | '/portfolio'
+    | '/pricing'
+    | '/privacy'
     | '/services'
+    | '/terms'
     | '/services/ai'
+    | '/services/automation'
     | '/services/cloud'
     | '/services/cybersecurity'
     | '/services/game'
     | '/services/mobile'
+    | '/services/uiux'
     | '/services/web'
     | '/services/'
   fileRoutesById: FileRoutesById
@@ -238,12 +310,23 @@ export interface RootRouteChildren {
   CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
+  FaqRoute: typeof FaqRoute
   PortfolioRoute: typeof PortfolioRoute
+  PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -251,11 +334,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portfolio': {
       id: '/portfolio'
       path: '/portfolio'
       fullPath: '/portfolio'
       preLoaderRoute: typeof PortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -328,6 +432,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesWebRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/services/uiux': {
+      id: '/services/uiux'
+      path: '/uiux'
+      fullPath: '/services/uiux'
+      preLoaderRoute: typeof ServicesUiuxRouteImport
+      parentRoute: typeof ServicesRoute
+    }
     '/services/mobile': {
       id: '/services/mobile'
       path: '/mobile'
@@ -356,6 +467,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesCloudRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/services/automation': {
+      id: '/services/automation'
+      path: '/automation'
+      fullPath: '/services/automation'
+      preLoaderRoute: typeof ServicesAutomationRouteImport
+      parentRoute: typeof ServicesRoute
+    }
     '/services/ai': {
       id: '/services/ai'
       path: '/ai'
@@ -368,20 +486,24 @@ declare module '@tanstack/react-router' {
 
 interface ServicesRouteChildren {
   ServicesAiRoute: typeof ServicesAiRoute
+  ServicesAutomationRoute: typeof ServicesAutomationRoute
   ServicesCloudRoute: typeof ServicesCloudRoute
   ServicesCybersecurityRoute: typeof ServicesCybersecurityRoute
   ServicesGameRoute: typeof ServicesGameRoute
   ServicesMobileRoute: typeof ServicesMobileRoute
+  ServicesUiuxRoute: typeof ServicesUiuxRoute
   ServicesWebRoute: typeof ServicesWebRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 const ServicesRouteChildren: ServicesRouteChildren = {
   ServicesAiRoute: ServicesAiRoute,
+  ServicesAutomationRoute: ServicesAutomationRoute,
   ServicesCloudRoute: ServicesCloudRoute,
   ServicesCybersecurityRoute: ServicesCybersecurityRoute,
   ServicesGameRoute: ServicesGameRoute,
   ServicesMobileRoute: ServicesMobileRoute,
+  ServicesUiuxRoute: ServicesUiuxRoute,
   ServicesWebRoute: ServicesWebRoute,
   ServicesIndexRoute: ServicesIndexRoute,
 }
@@ -399,19 +521,13 @@ const rootRouteChildren: RootRouteChildren = {
   CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
+  FaqRoute: FaqRoute,
   PortfolioRoute: PortfolioRoute,
+  PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
